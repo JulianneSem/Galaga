@@ -128,21 +128,21 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_ESCAPE]:
+        running = False
+    if keys[pygame.K_LEFT]:
+        player.moveLeft()
+    if keys[pygame.K_RIGHT]:
+        player.moveRight()
+    if keys[pygame.K_UP] and projectiletimer == 0:
+        projectile = Projectile()
+        projectile.rect.x = player.rect.left + (player.rect.right - player.rect.left)/2
+        projectile.rect.y = player.rect.y - 10
+        all_sprites.add(projectile)
+        projectiles.add(projectile)
+        projectiletimer = 1
 
-    if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
-                running = False
-            if event.key == K_LEFT:
-                player.moveLeft()
-            if event.key == K_RIGHT:
-                player.moveRight()
-            if event.key == K_UP and projectiletimer == 0:
-                projectile = Projectile()
-                projectile.rect.x = player.rect.left + (player.rect.right - player.rect.left)/2
-                projectile.rect.y = player.rect.y - 10
-                all_sprites.add(projectile)
-                projectiles.add(projectile)
-                projectiletimer = 1
     # Check if projectile hits enemy
     for pro in projectiles:
         pro.update()
