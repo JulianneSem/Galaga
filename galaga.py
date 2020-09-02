@@ -44,8 +44,6 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.move_ip(0, self.speed)
         if self.rect.top < 0:
             self.kill()
-    def is_collided_with(self, sprite):
-        return self.rect.colliderect(sprite.rect)
 
 def lvl1():
     for x in range(3):
