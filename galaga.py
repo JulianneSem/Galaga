@@ -85,10 +85,11 @@ running = True
 wonRound = True
 projectiletimer = 0
 score = 0
-lvl = 1
+lvl = 0
 while running:
     if wonRound == True:
         lvl1()
+        lvl += 1
         wonRound = False
     if projectiletimer > 2:
         projectiletimer = 0
@@ -121,7 +122,6 @@ while running:
             score += 1
         if len(enemies.sprites()) == 0:
             wonRound = True
-            lvl += 1
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
     lvltext = font.render('level: ' + str(lvl), True, (0, 0, 0))
