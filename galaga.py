@@ -61,6 +61,7 @@ pygame.font.init()
 clock = pygame.time.Clock()
 
 
+
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption('Galaga')
 screen.fill((255, 255, 255))
@@ -82,10 +83,15 @@ screen.blit(scoretext,(0,0))
 pygame.display.flip()
 running = True
 wonRound = True
+projectiletimer = 0
 while running:
     if wonRound == True:
         lvl1()
         wonRound = False
+    if projectiletimer > 2:
+        projectiletimer = 0
+    elif projectiletimer > 0:
+        projectiletimer += 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -97,12 +103,13 @@ while running:
                 player.moveLeft()
             if event.key == K_RIGHT:
                 player.moveRight()
-            if event.key == K_UP:
+            if event.key == K_UP and projectiletimer == 0:
                 projectile = Projectile()
                 projectile.rect.x = player.rect.left + (player.rect.right - player.rect.left)/2
                 projectile.rect.y = player.rect.y - 10
                 all_sprites.add(projectile)
                 projectiles.add(projectile)
+                projectiletimer = 1
     # Check if projectile hits enemy
     for pro in projectiles:
         pro.update()
@@ -111,7 +118,7 @@ while running:
             wonRound = True
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
-    screen.blit(lvltext,(0,0))
+    screen.blit(lvltext,(20,0))
     screen.blit(scoretext,(700,0))
     pygame.display.flip()
     screen.fill((255, 255, 255))
