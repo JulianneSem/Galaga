@@ -117,6 +117,7 @@ while running:
         pro.update()
         enemiesHit = pygame.sprite.spritecollide(pro, enemies, True)
         if len(enemiesHit) > 0:
+            pro.kill()
             score += 1
         if len(enemies.sprites()) == 0:
             wonRound = True
