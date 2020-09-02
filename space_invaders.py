@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
         self.surf = pygame.Surface((75, 25))
-        self.surf.fill((0, 255, 0))
+        self.surf.fill((0, 0, 0))
         self.rect = self.surf.get_rect()
         self.rect.left = 75
         self.rect.bottom = 550
@@ -34,19 +34,19 @@ class Enemy(pygame.sprite.Sprite):
         # self.speed = random.randint(5, 20)
 
 class Projectile(pygame.sprite.Sprite):
-    def __init__(self,startX, startY):
+    def __init__(self):
         super(Projectile, self).__init__()
         self.surf = pygame.Surface((3, 10))
         self.surf.fill((255, 0, 255))
-        self.rect = self.surf.get_rect(center=(startX,startY))
+        self.rect = self.surf.get_rect()
         self.speed = -1
     def update(self):
         self.rect.move_ip(0, self.speed)
-        if self.rect.right < 0:
+        if self.rect.top < 0:
             self.kill()
 
-pygame.init()
 
+pygame.init()
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption('Space Invaders')
 screen.fill((255, 255, 255))
@@ -80,11 +80,14 @@ while running:
             if event.key == K_RIGHT:
                 player.moveRight()
             if event.key == K_UP:
-                projectile = Projectile(player.rect.left + ((player.rect.right - player.rect.left)/2), player.rect.top)
+                projectile = Projectile()
+                projectile.rect.x = player.rect.left + (player.rect.right - player.rect.left)/2
+                projectile.rect.y = player.rect.y - 10
                 all_sprites.add(projectile)
                 projectiles.add(projectile)
     for pro in projectiles:
         pro.update()
+        enemiesHit = pygame.sprite.spritecollide(pro, enemies, True)
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
     pygame.display.flip()
