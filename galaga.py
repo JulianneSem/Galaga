@@ -45,16 +45,38 @@ class Projectile(pygame.sprite.Sprite):
         if self.rect.top < 0:
             self.kill()
 
+class EnemyProjectile(pygame.sprite.Sprite):
+    def __init__(self):
+        super(EnemyProjectile, self).__init__()
+        self.surf = pygame.Surface((3, 10))
+        self.surf.fill((255, 0, 255))
+        self.rect = self.surf.get_rect()
+        self.speed = 15
+    def update(self):
+        self.rect.move_ip(0, self.speed)
+        if self.rect.bottom < 0:
+            self.kill()
+
 def lvl1():
-    for x in range(3):
-        enemy = Enemy()
-        enemy.rect.x = 40*x + 20
-        enemy.rect.y = 25
-        all_sprites.add(enemy)
-        enemies.add(enemy)
+    for x in range(15):
+        createEnemy(40*x + 80, 25)
+        createEnemy(40*x + 80, 55)
+def lvl2():
+    for x in range(15):
+        createEnemy(40*x + 80, 25)
+        createEnemy(45*x + 40, 55)
+        createEnemy(40*x + 80, 85)
+def createEnemy(x, y):
+    enemy = Enemy()
+    enemy.rect.x = x
+    enemy.rect.y = y
+    all_sprites.add(enemy)
+    enemies.add(enemy)
 
 def removeSprites():
     for pro in projectiles:
+        pro.kill()
+    for pro in enemyprojectiles:
         pro.kill()
 
 pygame.init()
@@ -70,6 +92,7 @@ screen.fill((255, 255, 255))
 player = Player()
 enemies = pygame.sprite.Group()
 projectiles = pygame.sprite.Group()
+enemyprojectiles = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 
@@ -90,9 +113,14 @@ pygame.display.flip()
 while running:
     if wonRound == True:
         removeSprites()
-        lvl1()
         lvl += 1
         wonRound = False
+        if lvl == 1:
+            lvl1()
+        elif lvl == 2:
+            lvl2()
+        else:
+            lvl1()
     if projectiletimer > 2:
         projectiletimer = 0
     elif projectiletimer > 0:
