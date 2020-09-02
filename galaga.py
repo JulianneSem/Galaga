@@ -53,30 +53,30 @@ def lvl1():
         all_sprites.add(enemy)
         enemies.add(enemy)
 
-
+def removeSprites():
+    for pro in projectiles:
+        pro.kill()
 
 pygame.init()
 pygame.font.init()
 
 clock = pygame.time.Clock()
 
-
-
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption('Galaga')
 screen.fill((255, 255, 255))
 
+# sprite group initialization
 player = Player()
-pygame.display.flip()
-
 enemies = pygame.sprite.Group()
 projectiles = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
+
+# labels
 font = pygame.font.SysFont('Comic Sans MS', 30)
 lvltext = font.render('level: 1', True, (0, 0, 0))
 screen.blit(lvltext,(750,450))
-
 scoretext = font.render('score: 0', True, (0, 0, 0))
 screen.blit(scoretext,(0,0))
 
@@ -86,8 +86,10 @@ wonRound = True
 projectiletimer = 0
 score = 0
 lvl = 0
+pygame.display.flip()
 while running:
     if wonRound == True:
+        removeSprites()
         lvl1()
         lvl += 1
         wonRound = False
@@ -126,7 +128,6 @@ while running:
         screen.blit(entity.surf, entity.rect)
     lvltext = font.render('level: ' + str(lvl), True, (0, 0, 0))
     scoretext = font.render('score: ' + str(score), True, (0, 0, 0))
-
 
     screen.blit(lvltext,(20,0))
     screen.blit(scoretext,(700,0))
