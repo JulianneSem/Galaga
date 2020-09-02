@@ -44,6 +44,8 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.move_ip(0, self.speed)
         if self.rect.top < 0:
             self.kill()
+    def is_collided_with(self, sprite):
+        return self.rect.colliderect(sprite.rect)
 
 def lvl1():
     for x in range(3):
@@ -74,16 +76,18 @@ projectiles = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 font = pygame.font.SysFont('Comic Sans MS', 30)
-lvltext = font.render('level: 01', True, (0, 0, 0))
+lvltext = font.render('level: 1', True, (0, 0, 0))
 screen.blit(lvltext,(750,450))
 
-scoretext = font.render('score: 00', True, (0, 0, 0))
+scoretext = font.render('score: 0', True, (0, 0, 0))
 screen.blit(scoretext,(0,0))
 
 pygame.display.flip()
 running = True
 wonRound = True
 projectiletimer = 0
+score = 0
+lvl = 1
 while running:
     if wonRound == True:
         lvl1()
@@ -114,10 +118,17 @@ while running:
     for pro in projectiles:
         pro.update()
         enemiesHit = pygame.sprite.spritecollide(pro, enemies, True)
+        if len(enemiesHit) > 0:
+            score += 1
         if len(enemies.sprites()) == 0:
             wonRound = True
+            lvl += 1
     for entity in all_sprites:
         screen.blit(entity.surf, entity.rect)
+    lvltext = font.render('level: ' + str(lvl), True, (0, 0, 0))
+    scoretext = font.render('score: ' + str(score), True, (0, 0, 0))
+
+
     screen.blit(lvltext,(20,0))
     screen.blit(scoretext,(700,0))
     pygame.display.flip()
