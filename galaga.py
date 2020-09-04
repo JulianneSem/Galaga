@@ -32,6 +32,11 @@ class Enemy(pygame.sprite.Sprite):
         self.surf = pygame.Surface((30, 10))
         self.surf.fill((255, 0, 255))
         self.rect = self.surf.get_rect()
+        self.speed = 5
+    def update(self):
+        self.rect.move_ip(self.speed, self.speed)
+        if self.rect.top > 600:
+            self.kill()
 
 class Projectile(pygame.sprite.Sprite):
     def __init__(self):
@@ -78,6 +83,36 @@ def removeSprites():
         pro.kill()
     for pro in enemyprojectiles:
         pro.kill()
+def gameOver():
+    print("game over")
+    for pro in enemies:
+        pro.kill()
+    removeSprites()
+    font = pygame.font.SysFont('Comic Sans MS', 30)
+    gameovertext = font.render('Game Over', True, (0, 0, 0))
+    screen.blit(gameovertext,(350,150))
+    optionselected = False
+    pygame.draw.rect(screen, (0,0, 0), (150, 350, 200, 80))
+    pygame.draw.rect(screen, (0,0, 0), (450, 350, 200, 80))
+    quittext = font.render('Quit', True, (255, 255, 255))
+    screen.blit(quittext,(500, 370))
+    playagaintext = font.render('Play Again', True, (255, 255, 255))
+    screen.blit(playagaintext,(200,370))
+    pygame.display.flip()
+    while optionselected == False:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_ESCAPE]:
+            pygame.quit()
+        # if playagaintext.get_rect().collidepoint(pygame.mouse.get_pos()):
+        #     #print("play")
+        # if quittext.get_rect().collidepoint(pygame.mouse.get_pos()):
+        # #    print("quit")
+        clock.tick(30)
+
+
 
 pygame.init()
 pygame.font.init()
@@ -110,7 +145,12 @@ projectiletimer = 0
 score = 0
 lvl = 0
 pygame.display.flip()
+
 while running:
+    enemiesHit = pygame.sprite.spritecollide(player, enemies, True)
+    if len(enemiesHit) > 0:
+        player.kill()
+        gameOver()
     if wonRound == True:
         removeSprites()
         lvl += 1
@@ -157,6 +197,7 @@ while running:
     lvltext = font.render('level: ' + str(lvl), True, (0, 0, 0))
     scoretext = font.render('score: ' + str(score), True, (0, 0, 0))
 
+    # enemies.get_sprite(0).update()
     screen.blit(lvltext,(20,0))
     screen.blit(scoretext,(700,0))
     pygame.display.flip()
