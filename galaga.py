@@ -33,6 +33,7 @@ class Enemy(pygame.sprite.Sprite):
         self.surf.fill((255, 0, 255))
         self.rect = self.surf.get_rect()
         self.speed = 5
+        self.timer = 0
     def update(self):
         self.rect.move_ip(self.speed, self.speed)
         if self.rect.top > 600:
@@ -106,10 +107,6 @@ def gameOver():
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
             pygame.quit()
-        # if playagaintext.get_rect().collidepoint(pygame.mouse.get_pos()):
-        #     #print("play")
-        # if quittext.get_rect().collidepoint(pygame.mouse.get_pos()):
-        # #    print("quit")
         clock.tick(30)
 
 
@@ -197,7 +194,6 @@ while running:
     lvltext = font.render('level: ' + str(lvl), True, (0, 0, 0))
     scoretext = font.render('score: ' + str(score), True, (0, 0, 0))
 
-    # enemies.get_sprite(0).update()
     screen.blit(lvltext,(20,0))
     screen.blit(scoretext,(700,0))
     pygame.display.flip()
