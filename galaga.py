@@ -36,11 +36,15 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = 5
         self.timer = 0
         self.counter = 0
+        self.inity = 0
+        self.initx = 0
     def update(self):
         if self.counter == self.timer:
-            self.rect.move_ip(0, self.speed)
-            if self.rect.top > 600:
-                self.kill()
+            if self.rect.y > 590:
+                self.counter = self.counter
+                #TODO: move enemies back to starting point
+            else:
+                self.rect.move_ip(0, self.speed)
         else:
             self.counter += 1
 
@@ -63,12 +67,10 @@ class EnemyProjectile(pygame.sprite.Sprite):
         self.surf.fill((255, 0, 255))
         self.rect = self.surf.get_rect()
         self.speed = 15
-        self.inity = 0
-        self.initx = 0
     def update(self):
         self.rect.move_ip(0, self.speed)
         if self.rect.bottom < 0:
-            self.rect.move_ip(initx, inity)
+            self.kill()
 
 def lvl1():
     for x in range(15):
