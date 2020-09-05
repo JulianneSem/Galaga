@@ -1,4 +1,5 @@
 import pygame
+import random
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -34,10 +35,14 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect()
         self.speed = 5
         self.timer = 0
+        self.counter = 0
     def update(self):
-        self.rect.move_ip(self.speed, self.speed)
-        if self.rect.top > 600:
-            self.kill()
+        if self.counter == self.timer:
+            self.rect.move_ip(0, self.speed)
+            if self.rect.top > 600:
+                self.kill()
+        else:
+            self.counter += 1
 
 class Projectile(pygame.sprite.Sprite):
     def __init__(self):
@@ -58,10 +63,12 @@ class EnemyProjectile(pygame.sprite.Sprite):
         self.surf.fill((255, 0, 255))
         self.rect = self.surf.get_rect()
         self.speed = 15
+        self.inity = 0
+        self.initx = 0
     def update(self):
         self.rect.move_ip(0, self.speed)
         if self.rect.bottom < 0:
-            self.kill()
+            self.rect.move_ip(initx, inity)
 
 def lvl1():
     for x in range(15):
@@ -76,6 +83,9 @@ def createEnemy(x, y):
     enemy = Enemy()
     enemy.rect.x = x
     enemy.rect.y = y
+    enemy.initx = x
+    enemy.inity = y
+    enemy.timer = random.randint(25, 300)
     all_sprites.add(enemy)
     enemies.add(enemy)
 
@@ -179,7 +189,7 @@ while running:
         all_sprites.add(projectile)
         projectiles.add(projectile)
         projectiletimer = 1
-
+    enemies.update()
     # Check if projectile hits enemy
     for pro in projectiles:
         pro.update()
