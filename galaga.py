@@ -1,5 +1,6 @@
 import pygame
 import random
+import sys
 from pygame.locals import (
     K_UP,
     K_DOWN,
@@ -104,10 +105,6 @@ class button(object):
         return False
 
 
-
-
-
-
 def lvl1():
     for x in range(15):
         createEnemy(40*x + 80, 25)
@@ -131,8 +128,8 @@ def removeSprites():
         pro.kill()
     for pro in enemyprojectiles:
         pro.kill()
+        
 def gameOver():
-    print("game over")
     for pro in enemies:
         pro.kill()
     removeSprites()
@@ -147,12 +144,14 @@ def gameOver():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
                 if playagainbtn.click(x, y):
                     optionselected = True
                 elif quitbtn.click(x, y):
                     pygame.quit()
+                    sys.exit()
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
             pygame.quit()
