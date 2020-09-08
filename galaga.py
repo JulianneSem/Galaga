@@ -37,12 +37,13 @@ class Enemy(pygame.sprite.Sprite):
         self.timer = 0
         self.counter = 0
         self.inity = 0
-        self.initx = 0
     def update(self):
         if self.counter == self.timer:
             if self.rect.y > 590:
-                self.rect = self.rect.move(self.rect.x - self.initx, self.rect.y - self.inity)
-                # print(self.rect.y)
+                deltay = abs(self.rect.y - self.inity)
+                self.rect = self.rect.move(0, deltay)
+            elif self.rect.y < 0:
+                self.rect = self.rect.move(0, self.rect.y - self.inity)
             else:
                 self.rect.move_ip(0, self.speed)
         else:
@@ -82,10 +83,9 @@ class button(object):
 
 
 def lvl1():
-    createEnemy(40 + 80, 25)
-    # for x in range(15):
-    #     createEnemy(40*x + 80, 25)
-    #     createEnemy(40*x + 80, 55)
+    for x in range(15):
+        createEnemy(40*x + 80, 25)
+        createEnemy(40*x + 80, 55)
 def lvl2():
     for x in range(15):
         createEnemy(40*x + 80, 25)
@@ -95,7 +95,6 @@ def createEnemy(x, y):
     enemy = Enemy(screen)
     enemy.rect.x = x
     enemy.rect.y = y
-    enemy.initx = x
     enemy.inity = y
     enemy.timer = random.randint(25, 300)
     all_sprites.add(enemy)
