@@ -28,7 +28,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.right = 800
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, screen):
         super(Enemy, self).__init__()
         self.surf = pygame.Surface((30, 10))
         self.surf.fill((255, 0, 255))
@@ -41,8 +41,8 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         if self.counter == self.timer:
             if self.rect.y > 590:
-                self.counter = self.counter
-                #TODO: move enemies back to starting point
+                self.rect = self.rect.move(self.rect.x - self.initx, self.rect.y - self.inity)
+                # print(self.rect.y)
             else:
                 self.rect.move_ip(0, self.speed)
         else:
@@ -72,17 +72,27 @@ class EnemyProjectile(pygame.sprite.Sprite):
         if self.rect.bottom < 0:
             self.kill()
 
+class button(object):
+    def __init__(self, x, y, text):
+        font = pygame.font.SysFont('Comic Sans MS', 30)
+        buttontext = font.render(text, True, (255, 255, 255))
+        screen.blit(buttontext,(200,370))
+        pygame.draw.rect(screen, (0,0, 0), (450, 350, 200, 80))
+        pygame.display.flip()
+
+
 def lvl1():
-    for x in range(15):
-        createEnemy(40*x + 80, 25)
-        createEnemy(40*x + 80, 55)
+    createEnemy(40 + 80, 25)
+    # for x in range(15):
+    #     createEnemy(40*x + 80, 25)
+    #     createEnemy(40*x + 80, 55)
 def lvl2():
     for x in range(15):
         createEnemy(40*x + 80, 25)
         createEnemy(45*x + 40, 55)
         createEnemy(40*x + 80, 85)
 def createEnemy(x, y):
-    enemy = Enemy()
+    enemy = Enemy(screen)
     enemy.rect.x = x
     enemy.rect.y = y
     enemy.initx = x
@@ -120,7 +130,6 @@ def gameOver():
         if keys[pygame.K_ESCAPE]:
             pygame.quit()
         clock.tick(30)
-
 
 
 pygame.init()
