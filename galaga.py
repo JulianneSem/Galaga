@@ -74,12 +74,30 @@ class EnemyProjectile(pygame.sprite.Sprite):
             self.kill()
 
 class button(object):
-    def __init__(self, x, y, text):
+    def __init__(self, x, y, text, screen):
         font = pygame.font.SysFont('Comic Sans MS', 30)
-        buttontext = font.render(text, True, (255, 255, 255))
-        screen.blit(buttontext,(200,370))
-        pygame.draw.rect(screen, (0,0, 0), (450, 350, 200, 80))
-        pygame.display.flip()
+        self.color = (42, 191, 220)
+        self.text = text
+        self.textloc = (x,y)
+        self.position = (x-50, y-50, 200, 80)
+        self.drawrect()
+
+    def hover(self, x, y):
+        if x > self.rect.x and x < self.rect.x + self.rect.width:
+            if y > self.rect.y and y < self.rect.y + self.rect.height:
+                self.color = (24, 145, 169)
+            else:
+                self.color = (42, 191, 220)
+        else:
+            self.color = (42, 191, 220)
+        self.drawrect()
+
+    def drawrect(self):
+        self.rect = pygame.draw.rect(screen, self.color, self.position)
+        text = font.render(self.text, True, (255, 255, 255))
+        screen.blit(text,self.textloc)
+
+
 
 
 def lvl1():
@@ -114,12 +132,8 @@ def gameOver():
     gameovertext = font.render('Game Over', True, (0, 0, 0))
     screen.blit(gameovertext,(350,150))
     optionselected = False
-    pygame.draw.rect(screen, (0,0, 0), (150, 350, 200, 80))
-    pygame.draw.rect(screen, (0,0, 0), (450, 350, 200, 80))
-    quittext = font.render('Quit', True, (255, 255, 255))
-    screen.blit(quittext,(500, 370))
-    playagaintext = font.render('Play Again', True, (255, 255, 255))
-    screen.blit(playagaintext,(200,370))
+    playagainbtn = button(200, 370, 'play again', screen)
+    quitbtn = button(500, 370, 'quit', screen)
     pygame.display.flip()
     while optionselected == False:
         for event in pygame.event.get():
@@ -128,6 +142,10 @@ def gameOver():
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
             pygame.quit()
+        x, y = pygame.mouse.get_pos()
+        playagainbtn.hover(x,y)
+        quitbtn.hover(x,y)
+        pygame.display.update()
         clock.tick(30)
 
 
