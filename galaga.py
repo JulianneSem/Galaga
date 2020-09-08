@@ -205,7 +205,7 @@ while running:
     enemiesHit = pygame.sprite.spritecollide(player, enemies, True)
     if len(enemiesHit) > 0:
         if lives > 1:
-            lives -= 1
+            lives -= len(enemiesHit)
         else:
             gameOver()
             screen.fill((255, 255, 255))
