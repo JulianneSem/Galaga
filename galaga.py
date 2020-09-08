@@ -50,6 +50,7 @@ class Enemy(pygame.sprite.Sprite):
         else:
             self.counter += 1
 
+
 class Projectile(pygame.sprite.Sprite):
     def __init__(self):
         super(Projectile, self).__init__()
@@ -109,11 +110,13 @@ def lvl1():
     for x in range(15):
         createEnemy(40*x + 80, 25)
         createEnemy(40*x + 80, 55)
+
 def lvl2():
     for x in range(15):
         createEnemy(40*x + 80, 25)
         createEnemy(45*x + 40, 55)
         createEnemy(40*x + 80, 85)
+
 def createEnemy(x, y):
     enemy = Enemy(screen)
     enemy.rect.x = x
@@ -128,7 +131,7 @@ def removeSprites():
         pro.kill()
     for pro in enemyprojectiles:
         pro.kill()
-        
+
 def gameOver():
     for pro in enemies:
         pro.kill()
@@ -184,7 +187,9 @@ font = pygame.font.SysFont('Comic Sans MS', 30)
 lvltext = font.render('level: 1', True, (0, 0, 0))
 screen.blit(lvltext,(750,450))
 scoretext = font.render('score: 0', True, (0, 0, 0))
-screen.blit(scoretext,(0,0))
+screen.blit(scoretext,(20,0))
+livestext = font.render('lives: 3', True, (0, 0, 0))
+screen.blit(livestext,(20,25))
 
 pygame.display.flip()
 running = True
@@ -192,16 +197,21 @@ wonRound = True
 projectiletimer = 0
 score = 0
 lvl = 0
+lives = 3
 pygame.display.flip()
 
 while running:
     enemiesHit = pygame.sprite.spritecollide(player, enemies, True)
     if len(enemiesHit) > 0:
-        gameOver()
-        screen.fill((255, 255, 255))
-        score = 0
-        lvl = 1
-        lvl1()
+        if lives > 1:
+            lives -= 1
+        else:
+            gameOver()
+            screen.fill((255, 255, 255))
+            score = 0
+            lvl = 1
+            lives = 3
+            lvl1()
 
     if wonRound == True:
         removeSprites()
@@ -248,9 +258,10 @@ while running:
         screen.blit(entity.surf, entity.rect)
     lvltext = font.render('level: ' + str(lvl), True, (0, 0, 0))
     scoretext = font.render('score: ' + str(score), True, (0, 0, 0))
-
+    livestext = font.render('lives: ' + str(lives), True, (0, 0, 0))
     screen.blit(lvltext,(20,0))
     screen.blit(scoretext,(700,0))
+    screen.blit(livestext,(20,25))
     pygame.display.flip()
     screen.fill((255, 255, 255))
     clock.tick(30)
