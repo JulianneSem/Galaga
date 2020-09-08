@@ -63,6 +63,7 @@ class Projectile(pygame.sprite.Sprite):
         if self.rect.top < 0:
             self.kill()
 
+
 class EnemyProjectile(pygame.sprite.Sprite):
     def __init__(self):
         super(EnemyProjectile, self).__init__()
@@ -214,9 +215,10 @@ while running:
             lvl1()
 
     if wonRound == True:
-        removeSprites()
         lvl += 1
         wonRound = False
+        screen.fill((255, 255, 255))
+        removeSprites()
         if lvl == 1:
             lvl1()
         elif lvl == 2:
