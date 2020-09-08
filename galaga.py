@@ -97,6 +97,14 @@ class button(object):
         text = font.render(self.text, True, (255, 255, 255))
         screen.blit(text,self.textloc)
 
+    def click(self, x, y):
+        if x > self.rect.x and x < self.rect.x + self.rect.width:
+            if y > self.rect.y and y < self.rect.y + self.rect.height:
+                return True
+        return False
+
+
+
 
 
 
@@ -139,6 +147,12 @@ def gameOver():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = pygame.mouse.get_pos()
+                if playagainbtn.click(x, y):
+                    optionselected = True
+                elif quitbtn.click(x, y):
+                    pygame.quit()
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
             pygame.quit()
@@ -184,8 +198,12 @@ pygame.display.flip()
 while running:
     enemiesHit = pygame.sprite.spritecollide(player, enemies, True)
     if len(enemiesHit) > 0:
-        player.kill()
         gameOver()
+        screen.fill((255, 255, 255))
+        score = 0
+        lvl = 1
+        lvl1()
+
     if wonRound == True:
         removeSprites()
         lvl += 1
