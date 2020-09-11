@@ -83,8 +83,9 @@ class button(object):
         font = pygame.font.SysFont('Comic Sans MS', 30)
         self.color = (42, 191, 220)
         self.text = text
-        self.textloc = (x,y)
-        self.position = (x-50, y-50, 200, 80)
+        textwidth, textheight = font.size(str(text))
+        self.textloc = (x+100 - (textwidth/2),y+40 -(textheight/2))
+        self.position = (x, y, 200, 80)
         self.drawrect()
 
     def hover(self, x, y):
