@@ -136,18 +136,36 @@ def removeSprites():
     for pro in enemyprojectiles:
         pro.kill()
 
+# def getHighScores():
+def createText(x, y, text):
+    font = pygame.font.SysFont('Comic Sans MS', 25)
+    textobj = font.render(text, True, (0, 0, 0))
+    screen.blit(textobj,(x, y))
+
+def displayScores():
+    counter = 20
+    place = 0
+    createText(360, 80, 'High Scores')
+    for i in range(len(defaultscores)):
+        createText(320, 80 + counter, str(place + 1) + '.')
+        createText(360, 80 + counter, defaultscores[i][0])
+        createText(440, 80 + counter, defaultscores[i][1])
+        counter += 20
+        place += 1
+
 def gameOver(score):
     for pro in enemies:
         pro.kill()
     removeSprites()
     font = pygame.font.SysFont('Comic Sans MS', 30)
     gameovertext = font.render('Game Over', True, (0, 0, 0))
-    screen.blit(gameovertext,(350,150))
+    screen.blit(gameovertext,(350,20))
     scoretext = font.render('Score: ' + str(score), True, (0, 0, 0))
-    screen.blit(scoretext,(350,180))
+    screen.blit(scoretext,(350,50))
     optionselected = False
-    playagainbtn = button(200, 370, 'play again', screen)
-    quitbtn = button(500, 370, 'quit', screen)
+    playagainbtn = button(200, 470, 'play again', screen)
+    quitbtn = button(500, 470, 'quit', screen)
+    displayScores()
     pygame.display.flip()
     while optionselected == False:
         for event in pygame.event.get():
@@ -179,6 +197,10 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode((800,600))
 pygame.display.set_caption('Galaga')
 screen.fill((255, 255, 255))
+
+defaultscores = [['Alice', '300'], ['Bob', '250'], ['Carol', '200'], ['Dan', '175'],
+                ['Eve', '160'], ['Frank', '150'], ['Grace', '135'], ['Heidi', '100'],
+                ['Ivan', '50'], ['Judy', '24']]
 
 # sprite group initialization
 player = Player()
