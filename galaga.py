@@ -136,13 +136,15 @@ def removeSprites():
     for pro in enemyprojectiles:
         pro.kill()
 
-def gameOver():
+def gameOver(score):
     for pro in enemies:
         pro.kill()
     removeSprites()
     font = pygame.font.SysFont('Comic Sans MS', 30)
     gameovertext = font.render('Game Over', True, (0, 0, 0))
     screen.blit(gameovertext,(350,150))
+    scoretext = font.render('Score: ' + str(score), True, (0, 0, 0))
+    screen.blit(scoretext,(350,180))
     optionselected = False
     playagainbtn = button(200, 370, 'play again', screen)
     quitbtn = button(500, 370, 'quit', screen)
@@ -210,7 +212,7 @@ while running:
         if lives > 1:
             lives -= len(enemiesHit)
         else:
-            gameOver()
+            gameOver(score)
             screen.fill((255, 255, 255))
             score = 0
             lvl = 1
