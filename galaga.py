@@ -142,16 +142,37 @@ def createText(x, y, text):
     textobj = font.render(text, True, (0, 0, 0))
     screen.blit(textobj,(x, y))
 
-def displayScores():
+def displayScores(player_score):
     counter = 20
     place = 0
+    score_holder = ['-1', '-1']
+    place_holder = ['-1', '-1']
+    top_score = False
     createText(360, 80, 'High Scores')
     for i in range(len(defaultscores)):
+        if player_score > int(defaultscores[i][1]):
+            #TODO ask for player name
+            if top_score == False:
+                score_holder[0] = defaultscores[i][0]
+                score_holder[1] = defaultscores[i][1]
+                defaultscores[i][0] = 'player 1'
+                defaultscores[i][1] = str(player_score)
+                top_score = True
+            else:
+                place_holder[0] = score_holder[0]
+                place_holder[1] = score_holder[1]
+                score_holder[0] = defaultscores[i][0]
+                score_holder[1] = defaultscores[i][1]
+                defaultscores[i][0] = place_holder[0]
+                defaultscores[i][1] = place_holder[1]
+
+
         createText(320, 80 + counter, str(place + 1) + '.')
         createText(360, 80 + counter, defaultscores[i][0])
         createText(440, 80 + counter, defaultscores[i][1])
         counter += 20
         place += 1
+
 
 def gameOver(score):
     for pro in enemies:
@@ -165,7 +186,7 @@ def gameOver(score):
     optionselected = False
     playagainbtn = button(200, 470, 'play again', screen)
     quitbtn = button(500, 470, 'quit', screen)
-    displayScores()
+    displayScores(score)
     pygame.display.flip()
     while optionselected == False:
         for event in pygame.event.get():
@@ -200,7 +221,7 @@ screen.fill((255, 255, 255))
 
 defaultscores = [['Alice', '300'], ['Bob', '250'], ['Carol', '200'], ['Dan', '175'],
                 ['Eve', '160'], ['Frank', '150'], ['Grace', '135'], ['Heidi', '100'],
-                ['Ivan', '50'], ['Judy', '24']]
+                ['Ivan', '10'], ['Judy', '5']]
 
 # sprite group initialization
 player = Player()
