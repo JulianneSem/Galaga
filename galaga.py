@@ -254,6 +254,8 @@ while running:
     if len(enemiesHit) > 0:
         if lives > 1:
             lives -= len(enemiesHit)
+            if len(enemies.sprites()) == 0:
+                wonRound = True
         else:
             gameOver(score)
             screen.fill((255, 255, 255))
