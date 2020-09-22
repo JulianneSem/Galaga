@@ -39,7 +39,10 @@ class Enemy(pygame.sprite.Sprite):
         self.counter = 0
         self.inity = 0
         self.pattern = None
-        
+        self.projectile = EnemyProjectile()
+        self.projectile.rect.x = self.rect.left + (self.rect.right - self.rect.left)/2
+        self.projectile.rect.y = self.rect.y - 10
+
     def update(self):
         if self.counter == self.timer:
             if self.rect.y > 590:
@@ -49,6 +52,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.rect = self.rect.move(0, self.rect.y - self.inity)
             else:
                 self.rect.move_ip(0, self.speed)
+                self.projectile.update()
         else:
             self.counter += 1
 
@@ -70,17 +74,18 @@ class Projectile(pygame.sprite.Sprite):
 
 
 class EnemyProjectile(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self):
         super(EnemyProjectile, self).__init__()
-        self.surf = pygame.Surface((x, y))
-        self.surf.fill((25, 0, 255))
+        self.surf = pygame.Surface((3, 10))
+        self.surf.fill((250, 0, 255))
         self.rect = self.surf.get_rect()
-        self.speed = 10
+        self.speed = 15
 
     def update(self):
         self.rect.move_ip(0, self.speed)
         if self.rect.bottom < 0:
             self.kill()
+
 
 class button(object):
     def __init__(self, x, y, text, screen):
