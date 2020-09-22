@@ -38,6 +38,8 @@ class Enemy(pygame.sprite.Sprite):
         self.timer = 0
         self.counter = 0
         self.inity = 0
+        self.pattern = None
+        
     def update(self):
         if self.counter == self.timer:
             if self.rect.y > 590:
@@ -60,6 +62,7 @@ class Projectile(pygame.sprite.Sprite):
         self.surf.fill((255, 0, 255))
         self.rect = self.surf.get_rect()
         self.speed = -15
+
     def update(self):
         self.rect.move_ip(0, self.speed)
         if self.rect.top < 0:
@@ -73,6 +76,7 @@ class EnemyProjectile(pygame.sprite.Sprite):
         self.surf.fill((25, 0, 255))
         self.rect = self.surf.get_rect()
         self.speed = 10
+
     def update(self):
         self.rect.move_ip(0, self.speed)
         if self.rect.bottom < 0:
