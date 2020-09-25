@@ -146,8 +146,8 @@ def removeSprites():
         pro.kill()
 
 # def getHighScores():
-def createText(x, y, text):
-    font = pygame.font.SysFont('Comic Sans MS', 25)
+def createText(x, y, text, font):
+    font = pygame.font.SysFont('Comic Sans MS', font)
     textobj = font.render(text, True, (0, 0, 0))
     screen.blit(textobj,(x, y))
 
@@ -157,7 +157,7 @@ def displayScores(player_score):
     score_holder = ['-1', '-1']
     place_holder = ['-1', '-1']
     top_score = False
-    createText(360, 80, 'High Scores')
+    createText(330, 90, 'High Scores',30)
     for i in range(len(defaultscores)):
         if player_score > int(defaultscores[i][1]):
             #TODO ask for player name
@@ -176,9 +176,9 @@ def displayScores(player_score):
                 defaultscores[i][1] = place_holder[1]
 
 
-        createText(320, 80 + counter, str(place + 1) + '.')
-        createText(360, 80 + counter, defaultscores[i][0])
-        createText(440, 80 + counter, defaultscores[i][1])
+        createText(320, 100 + counter, str(place + 1) + '.', 25)
+        createText(360, 100 + counter, defaultscores[i][0], 25)
+        createText(440, 100 + counter, defaultscores[i][1], 25)
         counter += 20
         place += 1
 
