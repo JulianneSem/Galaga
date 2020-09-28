@@ -130,7 +130,7 @@ def lvl2():
         createEnemy(45*x + 40, 55)
         createEnemy(40*x + 80, 85)
 
-def createEnemy(x, y):
+def createEnemy(x, y, pattern = []):
     enemy = Enemy(screen)
     enemy.rect.x = x
     enemy.rect.y = y
